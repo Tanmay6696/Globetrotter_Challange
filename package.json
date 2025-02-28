@@ -1,0 +1,14 @@
+{
+  "name": "globetrotter",
+  "version": "1.0.0",
+  "description": "🧩 The Globetrotter Challenge – The Ultimate Travel Guessing Game!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Backend"
+  ],
+  "author": "Tanmay Dahale",
+  "license": "ISC"
+}
