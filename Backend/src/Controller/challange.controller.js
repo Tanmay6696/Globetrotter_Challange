@@ -21,7 +21,7 @@ const createChallange=async(req,res)=>{
         })
         await newchallange.save();
         const newchallangeid=newchallange._id;
-        const invitelink=`${process.env.CLIENT_URL}/challange/${newchallange._id}`;
+        const invitelink=`${process.env.CLIENT_URL}challange/${newchallange._id}`;
         res.json({
             messgae:"Challange created successfully",
             invitelink,
@@ -64,6 +64,8 @@ const getChallengeDetails =async(req,res)=>{
 }
 const AcceptChallenge =async(req,res)=>{
     try {
+        
+        
         const ChallangeDetails=await ChallengesCollectionmodel.findById(req.params.challengeId)
         const challangeid=req.params.challengeId;
         if(!ChallangeDetails){
@@ -72,27 +74,44 @@ const AcceptChallenge =async(req,res)=>{
         const challenger=await User.findById(ChallangeDetails.challenger);
         const invitee=await User.findById(ChallangeDetails.invitee);
         const scoreChallengers=challenger.currentScore;
-        console.log(scoreChallengers);
         
-        console.log(ChallangeDetails,req.params.challengeId);
         if(ChallangeDetails.status!=="pending"){
             return res.json({
                 message:"Challange is alerady accepted",
                 ChallangeDetails
             })
         }
-        ChallangeDetails.status = "active";
+        console.log("ChallangeDetails before status",ChallangeDetails);
+        
+        ChallangeDetails.status = "accepted";
         await ChallangeDetails.save();
+        console.log("ChallangeDetails after status",ChallangeDetails);
+        const opponentId=ChallangeDetails.invitee;
+        console.log("opponentId",opponentId);
+        
         if(challenger){
             console.log("challenger",challenger);
+            const questions = await QuestionsandAnswersModel.aggregate([{ $sample: { size: 5 } }]);
             
-            io.to(challenger).emit("challangeAccepted",{
-                message: "Your challenge has been accepted!",
-                challangeid,
-                opponent: opponentId,
-                questions
-            });
-            console.log("io",io);
+            
+            // socket.on("challengeAccepted", ({ challenger, challengeId, opponent, questions }) => {
+            //     console.log(`Sending challengeAccepted event to ${challenger}`);
+            //     io.to(challenger).emit("challengeAccepted", {
+            //         message: "Your challenge has been accepted!",
+            //         challengeId,
+            //         opponent,
+            //         questions
+            //     });
+            // });
+            console.log(challenger,invitee);
+            
+            // io.to(challengerSocketId).emit("challengeAccepted", {
+            //     message: "Your challenge has been accepted!",
+            //     challenger,
+            //     invitee,
+            //     questions
+            // });
+            //console.log("io to connected",io);
             
         }
         res.json({

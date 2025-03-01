@@ -11,9 +11,23 @@ const getRandomQuestions = async (req, res) => {
         res.status(500).json({ message: "Error fetching questions", error });
     }
 };
+const getQuestionofparticularIndex = async (req, res) => {
+    try {
+        console.log(req.body);
+        const Question_id=req.body.questionId;
+        const questions = await QuestionsandAnswersModel.findById(Question_id).select("-correctAnswer");
+
+       if(!questions) return res.status(404).json({ message: "Question not found" });
+        console.log(questions);
+        
+        res.json({ questions });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching questions", error });
+    }
+};
 const validateAnswer = async (req, res) => {
     try {
-        const { questionId, selectedOption ,username} = req.body;
+        const { questionId, selectedOption ,userId} = req.body;
         
         console.log(questionId, selectedOption);
         
@@ -23,7 +37,7 @@ const validateAnswer = async (req, res) => {
         console.log(question.correctAnswer);
         
         const isCorrect = question.correctAnswer === selectedOption;
-        const userdetail=await User.findOne({ username });
+        const userdetail=await User.findById(userId);
         console.log("userdetail",userdetail);
         userdetail.currentScore+=isCorrect;
         await userdetail.save();
@@ -33,4 +47,22 @@ const validateAnswer = async (req, res) => {
         res.status(500).json({ message: "Error validating answer", error });
     }
 };
-export {getRandomQuestions,validateAnswer}
+const getFinalScore = async (req, res) => {
+    try {
+        const { userId } = req.body;  // Fetch userId from query params
+        console.log("userId",userId);
+        
+        if (!userId) return res.status(400).json({ message: "User ID is required" });
+
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        res.json({ finalScore: user.currentScore });
+
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching final score", error: error.message });
+    }
+};
+
+
+export {getRandomQuestions,validateAnswer,getQuestionofparticularIndex,getFinalScore}

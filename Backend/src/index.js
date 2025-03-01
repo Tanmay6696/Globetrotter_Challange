@@ -7,7 +7,7 @@ import { Server } from "socket.io";
 dotenv.config({path:"./env"});
 
 const server = createServer(app); 
-
+const connectedUsers = {};
 const io = new Server(server, 
     { 
         cors: { 
@@ -15,10 +15,27 @@ const io = new Server(server,
         } 
     }
 );
+io.on("connection", (socket) => {
+  
+    socket.on("register", (userId) => {
+        console.log(`User ${userId} joined room`);
+
+      connectedUsers[userId] = socket.id;
+    });
+  
+    
+  
+    socket.on("disconnect", () => {
+      console.log("User disconnected:", socket.id);
+      Object.keys(connectedUsers).forEach((key) => {
+        if (connectedUsers[key] === socket.id) delete connectedUsers[key];
+      });
+    });
+  });
 export {io};
 connectDB()
 .then(()=>{
-    server.listen(process.env.PORT ||3000, ()=>{
+    app.listen(process.env.PORT ||3000, ()=>{
         console.log(`server is running on port ${process.env.PORT ||3000}`);
         
     })
