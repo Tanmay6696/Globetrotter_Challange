@@ -1,23 +1,27 @@
-import React from 'react'
+import React from 'react';
 
-const ButtonComponnet = ({name,onClick}) => {
+const ButtonComponent = ({ name, onClick }) => {
   return (
-    <div className='Buttons' 
-    onClick={onClick}
-    style={{
-        padding: "10px 20px",
-        margin: "10px",
+    <button
+      onClick={onClick}
+      style={{
+        width: "100%",
+        background: "#667eea",
+        color: "white",
+        padding: "12px",
+        border: "none",
+        borderRadius: "8px",
         fontSize: "16px",
-        width: "20%",
         cursor: "pointer",
-        border: "2px solid black",
-        backgroundColor: "white",
-        transition: "background-color 0.3s ease",
+        transition: "background 0.3s ease",
+        marginTop: "10px",
       }}
-      >
-        {name}
-    </div>
-  )
-}
+      onMouseOver={(e) => (e.target.style.background = "#5a67d8")}
+      onMouseOut={(e) => (e.target.style.background = "#667eea")}
+    >
+      {name}
+    </button>
+  );
+};
 
-export default ButtonComponnet
+export default ButtonComponent;
