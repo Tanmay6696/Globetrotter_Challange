@@ -33,11 +33,7 @@ io.on("connection", (socket) => {
     });
   });
 export {io};
-connectDB()
-.then(()=>{
-    app.listen(process.env.PORT ||3000, ()=>{
-        console.log(`server is running on port ${process.env.PORT ||3000}`);
-        
-    })
-})
-.catch((error)=>console.log("error",error));
+export default async function handler(req, res) {
+  await connectDB();
+  return server(req, res);
+}
