@@ -1,6 +1,5 @@
 import {ChallengesCollectionmodel} from '../models/ChallengesCollection.model.js';
 import {User} from '../models/user.model.js';
-import {io} from '../index.js';
 import {QuestionsandAnswersModel} from '../models/QuestionsandAnswers.model.js';
 import { getRandomQuestions,validateAnswer } from './game.controller.js';
 
