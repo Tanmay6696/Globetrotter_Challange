@@ -15,7 +15,7 @@ app.use(cookieParser());
 
 
 
-//routes import 
+//routes import tt
 import userRoutes from './routes/user.routes.js';
 app.use("/user",userRoutes);
 
