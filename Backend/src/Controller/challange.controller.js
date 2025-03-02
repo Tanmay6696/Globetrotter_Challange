@@ -2,7 +2,7 @@ import {ChallengesCollectionmodel} from '../models/ChallengesCollection.model.js
 import {User} from '../models/user.model.js';
 import {QuestionsandAnswersModel} from '../models/QuestionsandAnswers.model.js';
 import { getRandomQuestions,validateAnswer } from './game.controller.js';
-
+//comment added 
 const createChallange=async(req,res)=>{
     try {
         const { challengerUsername, opponentUsername } = req.body;
@@ -28,7 +28,8 @@ const createChallange=async(req,res)=>{
             ChallangerScore:challenger.highScore
         })
     } catch (error) {
-        console.error(error);
+        console.error(error); 
+        
         
     }
 }
