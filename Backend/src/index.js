@@ -35,5 +35,5 @@ io.on("connection", (socket) => {
 export {io};
 export default async function handler(req, res) {
   await connectDB();
-  return server(req, res);
+  return app(req, res);
 }
